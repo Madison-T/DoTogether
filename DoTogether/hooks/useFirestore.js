@@ -107,7 +107,17 @@ export const fetchGroupById = async (groupId) =>{
     }
   }catch(error){
     console.error("Error fetch group: ", error);
-    throw error;
+  }
+};
+
+//Fetch groups for a specific user
+export const fetchUserGroups = async (userId) =>{
+  try{
+    const snapshot = await getDocs(collection(firestore, 'groups'));
+    const groups = snapshot.docs.mao(doc => ({id: doc.id, ...doc.data()})).filter(group => group.members && group.members.includes(userId));
+    return groups;
+  }catch(error){
+    console.error("Error fetching user groups: ", error);
   }
 }
 
@@ -131,6 +141,68 @@ export const deleteGroup = async (groupId) => {
     console.log(`Group with ID: ${groupId} deleted successfully`);
   } catch (error) {
     console.error('Error deleting group: ', error);
+  }
+};
+
+//Finding a group by groupID code
+export const findGroupByCode = async(code) =>{
+  try{
+    const snapshot = await getDocs(collection(firestore, 'groups'));
+    const groups = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
+    const group = groups.find(g=> g.groupId === code);
+    return group || null;
+  }catch(error){
+    console.error("Error find group by code:", error);
+  }
+};
+
+export const addMemberToGroup = async(groupId, userId) =>{
+  try{
+    const groupDoc = await getDoc(doc(firestore, 'groups', groupId));
+    if(!groupDoc.exists()){
+      throw new Error("Group not found");
+    }
+
+    const groupData = groupDoc.data();
+    const members = groupData.members || [];
+    if(members.includes(userId)){
+      console.log("User is already a member of this group");
+      return;
+    }
+
+    await updateDoc(doc(firestore, 'groups', groupId), {
+      members: [...members, userId],
+      updatedAt: new Date().toISOString(),
+    });
+
+    console.log(`User ${userId} added to group ${groupId} successfully`);
+  }catch(error){
+    console.log("Error adding member to group", error);
+  }
+};
+
+export const removeMemberFromGroup = async(groupId, userId) =>{
+  try{
+    const groupDoc = await getDoc(doc(firestore, 'groups', groupId));
+    if(!groupDoc.exists()){
+      throw new Error("Group not found");
+    }
+
+    const groupData = groupDoc.data();
+    const members = groupData.members || [];
+
+    if(!members.includes(userId)){
+      console.log("User is not a member of this group");
+      return;
+    }
+
+    await updateDoc(doc(firestore, 'groups', groupId),{
+      members: members.filter(memberId => memberId !== userId),
+      updatedAt: new DataTransfer().toISOString(),
+    });
+    console.log(`User ${userId} removed from group ${groupId} successfully`);
+  }catch(error){
+    console.error("Error removing member from group", error);
   }
 };
 
