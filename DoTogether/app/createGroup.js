@@ -18,10 +18,7 @@ export default function groupScreen() {
 
         try{
             const result = await createGroup(groupName, description);
-            router.push({
-                pathname: '/viewGroup',
-                params: {groupId: result.groupId, groupName: result.name}
-            });
+            router.push(`/viewGroup?groupId=${result.groupId}&groupName=${result.name}`);
 
             setGroupName('');
             setDescription('');

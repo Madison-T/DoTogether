@@ -1,7 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import {auth} from '../firebaseConfig';
 import * as FirestoreService from '../hooks/useFirestore';
-import shortid from 'shortid'; // Importing shortid for generating unique IDs
+import {nanoid} from 'nanoid'; // Importing shortid for generating unique IDs
 
 //Create the context
 export const GroupContext = createContext();
@@ -10,7 +10,7 @@ export const GroupContext = createContext();
 export const useGroupContext = () => useContext(GroupContext);
 
 //Provider Component
-export const GroupProvider = ({childrej}) => {
+export const GroupProvider = ({ children }) => {
     const [loading, setLoading] = useState(false);
     const [groups, setGroups] = useState([]);
     const [currentUser, setCurrentUser] = useState(null);
@@ -57,7 +57,7 @@ export const GroupProvider = ({childrej}) => {
                 throw new Error("User not authenticated");
             }
 
-            const groupId = shortid.generate();
+            const groupId = nanoid();
 
             await FirestoreService.addGroup(
                 groupId,
