@@ -84,8 +84,64 @@ export default function viewGroup (){
         );
     }
 
-    //TO BE DONE
     return (
-        <Text>Testing</Text>
-    )
+        <SafeAreaView style={styles.container}>
+            <ScrollView style={styles.scrollContainer}>
+                {/* Header */}
+                <View style={styles.header}>
+                    <TouchableOpacity
+                        style={styles.backButton}
+                        onPress = {()=> router.back()}
+                    >
+                        <Ionicons name="arrow-back" size={24} color="#3f51b5" />
+                    </TouchableOpacity>
+                    <Text style={styles.groupName}>{groupName}</Text>
+                </View>
+
+                {/*Group Description */}
+                {groupDetails?.description && (
+                    <View style={styles.section}>
+                        <Text style={styles.sectionTitle}>Description</Text>
+                        <Text style={styles.description}>{groupDetails.description}</Text>
+                    </View>
+                )}
+
+                {/* Share Code Button */}
+                <TouchableOpacity style={styles.shareButton} onPress={handleShareCode}>
+                    <Ionicons name="share-outline" size={20} color="#fff" />
+                    <Text style={styles.shareButtonText}>Share Group Code</Text>
+                </TouchableOpacity>
+
+                {/** Members Section */}
+                <View style={styles.section}>
+                    <Text style={styles.sectionTitle}>Members ({members.length})</Text>
+                    <View style={styles.membersList}>
+                        {members.map((member) => (
+                        <View key={member.id} style={styles.memberItem}>
+                            <View style={styles.memberAvatar}>
+                            <Text style={styles.memberInitial}>
+                                {member.name.charAt(0).toUpperCase()}
+                            </Text>
+                            </View>
+                            <Text style={styles.memberName}>
+                            {member.name} {member.id === groupDetails?.createdBy && '(Creator)'} 
+                            {member.id === currentUserId && ' (You)'}
+                            </Text>
+                        </View>
+                        ))}
+                    </View>
+                </View>
+
+                {/** Activities Section NEED TO DO*/}
+
+                {/** Leave Group */}
+                {!isCreator && (
+                    <TouchableOpacity style={styles.leaveButton} onPress={handleLeaveGroup}>
+                        <Ionicons name="exit-outline" size={20} color="#fff" />
+                        <Text style={styles.leaveButtonText}>Leave Group</Text>
+                    </TouchableOpacity>
+                )}
+            </ScrollView>
+        </SafeAreaView>
+    );
 }
