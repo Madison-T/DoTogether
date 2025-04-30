@@ -97,6 +97,10 @@ export const GroupProvider = ({childrej}) => {
 
     };
 
+    const createActivity = async(groupId) =>{
+
+    };
+
     //context value
     const value ={
         loading,
@@ -105,6 +109,7 @@ export const GroupProvider = ({childrej}) => {
         createGroup,
         joinGroup,
         leaveGroup,
+        createActivity,
         refreshGroups: () => currentUser && fetchUserGroups(currentUser.uid),
     };
 

@@ -18,7 +18,10 @@ export default function groupScreen() {
 
         try{
             const result = await createGroup(groupName, description);
-            router.replace('/viewGroup');
+            router.push({
+                pathname: '/viewGroup',
+                params: {groupId: result.groupId, groupName: result.name}
+            });
 
             setGroupName('');
             setDescription('');
@@ -27,8 +30,18 @@ export default function groupScreen() {
         }
     };
 
+    const handleCancel = () =>{
+        router.back();
+    };
+
     //TO BE DONE
     return(
-        <Text>Testing</Text>
+        <SafeAreaView style={StyleSheet.container}>
+            <Text>TO DO</Text>
+        </SafeAreaView>
     )
 };
+
+const styles = StyleSheet.create({
+
+});

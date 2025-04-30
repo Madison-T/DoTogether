@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from "react";
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Share, Alert, ActivityIndicator} from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Share, Alert, ActivityIndicator, FlatList} from 'react-native';
 import { useGroupContext } from "../contexts/GroupContext";
 import * as FirestoreService from '../hooks/useFirestore';
 import {auth} from '../firebaseConfig';
 import { Ionicons } from "@expo/vector-icons";
+import { useLocalSearchParams, router } from "expo-router";
 
-export default function viewGroup ({route}){
-    const { groupId, groupName} = route.params;
+export default function viewGroup (){
+    const { groupId, groupName} = useLocalSearchParams();
     const { leaveGroup, loading, error} = useGroupContext();
 
     const [groupDetails, setGroupDetails] = useState(null);
@@ -27,8 +28,22 @@ export default function viewGroup ({route}){
                 const group = await FirestoreService.fetchGroupById(groupId);
                 setGroupDetails(group);
 
-                setMembers(group.members || []);
-                setActivity(group.polls || []); //MAY NEED TO CHANGE
+                //Fetch member details
+                const memberDetails = await Promise.all(
+                    (group.members || []).map(async(memberId) =>{
+                        try{
+                            const user = await FirestoreService.fetchUserById(memberId);
+                            return { id: memberId, name: user?.name || 'Unknown User'};
+                        }catch(error){
+                            console.log("Error fetching member", error);
+                            return {id: memberId, name: 'Unknown User'};
+                        }
+                    })
+                );
+                setMembers(memberDetails);
+
+                const fetchActivities = await FirestoreService.fetchActivitiesByGroupId(groupId);
+                setActivity(fetchActivities || []); //MAY NEED TO CHANGE
             }catch(error){
                 console.log("Error fetching group details", error);
             }finally{
@@ -36,7 +51,9 @@ export default function viewGroup ({route}){
             }
         };
 
-        fetchGroupDetails();
+        if(groupId){
+            fetchGroupDetails();
+        }
     }, [groupId]);
 
     const handleShareCode = async () =>{

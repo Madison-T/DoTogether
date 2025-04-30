@@ -307,3 +307,23 @@ export const deleteActivity = async (activityId) => {
     console.error('Error deleting activity: ', error);
   }
 };
+
+//Fetch activity by group id
+export const fetchActivitiesByGroupId = async(groupId) =>{
+  try{
+    const activitiesRef = collection(firestore, 'Activities');
+    const q = query(
+      activitiesRef,
+      where('groupId', '==', groupId),
+      orderBy('createdAt', 'desc')
+    );
+
+    const snapshot = await getDocs(q);
+    const activities = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
+
+    console.log('Activities for group fetched successfully');
+    return activities;
+  }catch(error){
+    console.error("Error fetching activites by group id", error);
+  }
+}
