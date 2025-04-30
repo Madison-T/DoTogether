@@ -69,12 +69,13 @@ export const deleteUser = async (userId) => {
 // ===================== GROUPS =====================
 
 // Adding Group
-export const addGroup = async (groupId, name, description, members) => {
+export const addGroup = async (groupId, name, description, members, createdBy) => {
   try {
     await setDoc(doc(firestore, 'Groups', groupId), {
       name,
       description,
       members,
+      createdBy,
       createdAt: new Date().toISOString(),
     });
     console.log('Group added successfully');
@@ -93,6 +94,22 @@ export const fetchGroups = async () => {
     console.error('Error fetching groups: ', error);
   }
 };
+
+//Fetch a specific group
+export const fetchGroupById = async (groupId) =>{
+  try{
+    const groupDoc = await getDoc(doc(firestore, 'groups', groupId));
+    if(groupDoc.exists()){
+      return {id: groupDoc.id, ...groupDoc.data()};
+    }else{
+      console.log("No such group found");
+      return null;
+    }
+  }catch(error){
+    console.error("Error fetch group: ", error);
+    throw error;
+  }
+}
 
 // Updating Group
 export const updateGroup = async (groupId, updatedData) => {
