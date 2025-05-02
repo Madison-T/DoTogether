@@ -54,6 +54,11 @@ const Index = () => {
     router.push('/viewGroup/group123');
   }
 
+  //Navigation to Join Group
+  const navigateToJoinGroup = () => {
+    router.push('/joinGroup');
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Firestore Add Functions Test</Text>
@@ -64,6 +69,7 @@ const Index = () => {
       <Button title="Add Activity" onPress={handleAddActivity} style={styles.button} />
       <Button title="Navigate to Create Group" onPress={navigateToCreateGroup} style={styles.button} />
       <Button title="Navigate to View Group" onPress={navigateToViewGroup} style={styles.button} />
+      <Button title="Join Group" onPress={navigateToJoinGroup} style={styles.button} />
     </View>
   );
 };
