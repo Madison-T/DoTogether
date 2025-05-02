@@ -37,7 +37,7 @@ export const GroupProvider = ({ children }) => {
         try{
             const allGroups = await FirestoreService.fetchGroups();
             const userGroups = allGroups.filter(group =>
-                group.members ** group.members.includes(userId)
+                group.members && group.members.includes(userId)
             );
             setGroups(userGroups);
         }catch(error){
@@ -49,7 +49,7 @@ export const GroupProvider = ({ children }) => {
     };
 
     //Creating a new group
-    const createGroup = async (groupName, description = '') =>{
+    const createGroup = async (groupName, description) =>{
         setLoading(true);
         setError(null);
 
@@ -58,7 +58,7 @@ export const GroupProvider = ({ children }) => {
                 throw new Error("User not authenticated");
             }
 
-            const groupId = nanoid();
+            const groupId = nanoid(8);
 
             await FirestoreService.addGroup(
                 groupId,

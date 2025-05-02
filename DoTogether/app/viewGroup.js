@@ -145,3 +145,7 @@ export default function viewGroup (){
         </SafeAreaView>
     );
 }
+
+const styles = StyleSheet.create({
+
+});

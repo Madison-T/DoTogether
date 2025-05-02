@@ -1,93 +1,44 @@
-import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
-import { addUser, addGroup, addVote, addActivity } from '../hooks/useFirestore';
-import { Link, router} from 'expo-router';
+import React, { useEffect } from 'react';
+import { View, Text, Button, ActivityIndicator, StyleSheet } from 'react-native';
+import { useRouter } from 'expo-router';
+import { useAuth } from '../contexts/AuthContext';
 
 const Index = () => {
+  const router = useRouter();
+  const { user, loading } = useAuth();
 
-  // Test User Creation
-  const handleAddUser = async () => {
-    const userId = 'user123';
-    const name = 'Madison';
-    const email = 'madison@example.com';
-    await addUser(userId, name, email);
-    alert("User added successfully");
-  };
+  // Redirect if user is logged in
+  useEffect(() => {
+    if (!loading && user) {
+      router.replace('/dashboard');
+    }
+  }, [user, loading]);
 
-  // Test Group Creation
-  const handleAddGroup = async () => {
-    const groupId = 'group123';
-    const name = 'Movie Night';
-    const description = 'Group for planning movie nights';
-    const members = ['user123', 'user456', 'user789'];
-    await addGroup(groupId, name, description, members);
-    alert("Group added successfully");
-  };
-
-  // Test Vote Creation
-  const handleAddVote = async () => {
-    const voteId = 'vote123';
-    const groupId = 'group123';
-    const userId = 'user123';
-    const vote = 'Yes';
-    await addVote(voteId, groupId, userId, vote);
-    alert("Vote added successfully");
-  };
-
-  // Test Activity Creation
-  const handleAddActivity = async () => {
-    const activityId = 'activity123';
-    const name = 'Watch Inception';
-    const groupId = 'group123';
-    const description = 'Watching the movie Inception together';
-    await addActivity(activityId, name, groupId, description);
-    alert("Activity added successfully");
-  };
-
-  //Navigation to Create Group
-  const navigateToCreateGroup = () =>{
-    router.push('/createGroup');
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
   }
-
-  //Navigation to View Group
-  const navigateToViewGroup = () =>{
-    router.push('/viewGroup/group123');
-  }
-
-  //Navigation to Join Group
-  const navigateToJoinGroup = () => {
-    router.push('/joinGroup');
-  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Firestore Add Functions Test</Text>
+      <Text style={styles.title}>Welcome to DoTogether</Text>
 
-      <Button title="Add User" onPress={handleAddUser} />
-      <Button title="Add Group" onPress={handleAddGroup} style={styles.button} />
-      <Button title="Add Vote" onPress={handleAddVote} style={styles.button} />
-      <Button title="Add Activity" onPress={handleAddActivity} style={styles.button} />
-      <Button title="Navigate to Create Group" onPress={navigateToCreateGroup} style={styles.button} />
-      <Button title="Navigate to View Group" onPress={navigateToViewGroup} style={styles.button} />
-      <Button title="Join Group" onPress={navigateToJoinGroup} style={styles.button} />
+      <Text style={styles.subtitle}>Please sign up or log in to get started</Text>
+
+      <Button title="Go to Sign Up" onPress={() => router.push('/signup')} />
+      <View style={{ marginVertical: 10 }} />
+      <Button title="Go to Login" onPress={() => router.push('/login')} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 20,
-  },
-  header: {
-    fontSize: 20,
-    marginBottom: 20,
-  },
-  button: {
-    marginVertical: 10,
-  },
+  container: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 },
+  title: { fontSize: 24, marginBottom: 20 },
+  subtitle: { fontSize: 16, marginBottom: 30 }
 });
 
 export default Index;
