@@ -107,10 +107,18 @@ export default function viewGroup (){
                 )}
 
                 {/* Share Code Button */}
-                <TouchableOpacity style={styles.shareButton} onPress={handleShareCode}>
-                    <Ionicons name="share-outline" size={20} color="#fff" />
-                    <Text style={styles.shareButtonText}>Share Group Code</Text>
-                </TouchableOpacity>
+                {groupId && (  // Changed from joinCode to joinId
+                    <View style={styles.section}>
+                        <Text style={styles.sectionTitle}>Join Code</Text>
+                        <View style={styles.joinCodeContainer}>
+                            <Text style={styles.joinCodeText}>{groupId}</Text>
+                            <TouchableOpacity style={styles.shareButton} onPress={handleShareCode}>
+                                <Ionicons name="share-outline" size={20} color="#fff" />
+                                <Text style={styles.shareButtonText}>Share Group Code</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                )}
 
                 {/** Members Section */}
                 <View style={styles.section}>
