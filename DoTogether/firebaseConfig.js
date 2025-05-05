@@ -1,6 +1,8 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
+import { getStorage } from 'firebase/storage';
+import { initializeMessaging, getMessaging} from 'firebase/messaging';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDKN9fJQ7WSR864Fy-vwta70-9VVQrIXUs",
@@ -15,8 +17,20 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Initialize Firestore and Authentication
+// Initialize Firestore, Authentication and Storage
 const firestore = getFirestore(app);
 const auth = getAuth(app);
+const storage = getStorage(app);
 
-export { firestore, auth};
+//Initalise Firebase Cloud Messaging
+let messaging = null;
+
+if(typeof window !== 'undefined' && 'Notification' in window){
+  try{
+    messaging = getMessaging(app);
+  }catch(error){
+    console.log('FCM is not supported on this platform', error);
+  }
+}
+
+export { app, firestore, auth, storage, messaging};
