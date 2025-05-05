@@ -32,7 +32,7 @@ export default function groupScreen() {
     };
     
     return(
-        <SafeAreaView style={StyleSheet.container}>
+        <SafeAreaView style={styles.container}>
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 style={styles.keyboardAvoidingContainer}
@@ -96,5 +96,76 @@ export default function groupScreen() {
 }
 
 const styles = StyleSheet.create({
-
+    container: {
+        flex: 1,
+        backgroundColor: '#f5f5f5',
+    },
+    keyboardAvoidingContainer: {
+        flex: 1,
+    },
+    formContainer: {
+        flex: 1,
+        padding: 20,
+        justifyContent: 'center',
+    },
+    title: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: '#3f51b5',
+        marginBottom: 20,
+        textAlign: 'center',
+    },
+    inputContainer: {
+        marginBottom: 20,
+    },
+    label: {
+        fontSize: 16,
+        marginBottom: 8,
+        color: '#333',
+    },
+    input: {
+        borderWidth: 1,
+        borderColor: '#ddd',
+        borderRadius: 8,
+        padding: 12,
+        fontSize: 16,
+        backgroundColor: '#fff',
+    },
+    textArea: {
+        height: 100,
+        textAlignVertical: 'top',
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 20,
+    },
+    button: {
+        flex: 1,
+        padding: 15,
+        borderRadius: 8,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginHorizontal: 5,
+    },
+    cancelButton: {
+        backgroundColor: '#9e9e9e',
+    },
+    createButton: {
+        backgroundColor: '#3f51b5',
+    },
+    disabledButton: {
+        backgroundColor: '#9e9e9e',
+        opacity: 0.7,
+    },
+    buttonText: {
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: 16,
+    },
+    errorText: {
+        color: 'red',
+        marginTop: 10,
+        textAlign: 'center',
+    }
 });

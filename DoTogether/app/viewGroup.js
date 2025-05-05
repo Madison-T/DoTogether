@@ -67,8 +67,36 @@ export default function viewGroup (){
     };
 
     //FOR LAINA TO ADD TO
-    const handleLeaveGroup = () =>{
+    const handleLeaveGroup = async () =>{
+        Alert.alert(
+            "Leave Group",
+            "Are you sure you want to leave this group?",
+            [
+                {
+                    text: "Cancel",
+                    style: "cancel",
+                },
+                {
+                    text: "Leave",
+                    style: "desturctive",
+                    onPress: async () => {
+                        try {
+                            const result = await leaveGroup(groupId);
 
+                            if (result.success) {
+                                Alert.alert("Success", "Successfully left the group");
+                                router.replace("/dashboard");
+                            } else {
+                                Alert.alert("Error", result.message || "Failed to leave group");
+                            }
+                        } catch (error) {
+                            console.error("Error leaving group:", error);
+                            Alert.alert("Error", "Failed to leave group. Please try again.");
+                        }
+                    }
+                }
+            ]
+        );
     };
 
     //TO DO STILL 
@@ -155,5 +183,186 @@ export default function viewGroup (){
 }
 
 const styles = StyleSheet.create({
-
+    container: {
+        flex: 1,
+        backgroundColor: '#f5f5f5',
+    },
+    scrollContainer: {
+        flex: 1,
+        padding: 16,
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    header: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 20,
+    },
+    backButton: {
+        padding: 8,
+    },
+    groupName: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginLeft: 10,
+        flex: 1,
+        color: '#333',
+    },
+    section: {
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        padding: 16,
+        marginBottom: 16,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 3,
+        elevation: 2,
+    },
+    sectionHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 12,
+    },
+    sectionTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#333',
+        marginBottom: 12,
+    },
+    description: {
+        fontSize: 16,
+        color: '#555',
+        lineHeight: 22,
+    },
+    shareButton: {
+        backgroundColor: '#3f51b5',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 12,
+        paddingHorizontal: 16,
+        borderRadius: 8,
+        marginBottom: 16,
+    },
+    shareButtonText: {
+        color: '#fff',
+        fontWeight: 'bold',
+        marginLeft: 8,
+        fontSize: 16,
+    },
+    membersList: {
+        marginTop: 8,
+    },
+    memberItem: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingVertical: 8,
+        borderBottomWidth: 1,
+        borderBottomColor: '#eee',
+    },
+    memberAvatar: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        backgroundColor: '#3f51b5',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 10,
+    },
+    memberInitial: {
+        color: '#fff',
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    memberName: {
+        fontSize: 16,
+        color: '#333',
+    },
+    leaveButton: {
+        backgroundColor: '#f44336',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 12,
+        paddingHorizontal: 16,
+        borderRadius: 8,
+        marginTop: 20,
+    },
+    leaveButtonText: {
+        color: '#fff',
+        fontWeight: 'bold',
+        marginLeft: 8,
+        fontSize: 16,
+    },
+    createActivityButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    createActivityText: {
+        color: '#3f51b5',
+        marginLeft: 4,
+        fontWeight: '600',
+    },
+    activityList: {
+        marginTop: 8,
+    },
+    activityListContent: {
+        paddingBottom: 8,
+    },
+    activityItem: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        backgroundColor: '#f9f9f9',
+        padding: 12,
+        borderRadius: 8,
+        marginBottom: 8,
+        borderLeftWidth: 4,
+        borderLeftColor: '#3f51b5',
+    },
+    activityContent: {
+        flex: 1,
+    },
+    activityTitle: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#333',
+    },
+    activityDate: {
+        fontSize: 14,
+        color: '#666',
+        marginTop: 2,
+    },
+    activityDescription: {
+        fontSize: 14,
+        color: '#777',
+        marginTop: 4,
+    },
+    participantsText: {
+        fontSize: 12,
+        color: '#3f51b5',
+        marginTop: 6,
+    },
+    emptyActivitiesContainer: {
+        paddingVertical: 20,
+        alignItems: 'center',
+    },
+    emptyActivitiesText: {
+        fontSize: 16,
+        color: '#888',
+        fontWeight: '500',
+    },
+    emptyActivitiesSubtext: {
+        fontSize: 14,
+        color: '#aaa',
+        marginTop: 4,
+    },
 });

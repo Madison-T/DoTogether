@@ -114,7 +114,7 @@ export const fetchGroupById = async (groupId) =>{
 export const fetchUserGroups = async (userId) =>{
   try{
     const snapshot = await getDocs(collection(firestore, 'groups'));
-    const groups = snapshot.docs.mao(doc => ({id: doc.id, ...doc.data()})).filter(group => group.members && group.members.includes(userId));
+    const groups = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()})).filter(group => group.members && group.members.includes(userId));
     return groups;
   }catch(error){
     console.error("Error fetching user groups: ", error);

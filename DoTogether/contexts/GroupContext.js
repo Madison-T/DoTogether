@@ -130,7 +130,7 @@ export const GroupProvider = ({ children }) => {
                 message: "You have successfully joined the group",
             };
     } catch (error){
-        setError("Failed to join grouo");
+        setError("Failed to join group");
         console.error("Error joining group", error);
         setLoading(false);
         throw error;
